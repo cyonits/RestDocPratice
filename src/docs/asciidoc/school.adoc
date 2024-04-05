@@ -1,0 +1,10 @@
+[[School-API]]
+== SchoolAPI
+
+=== 학교 생성
+`POST /school`
+
+[%collapsible]
+====
+operation::school[snippets='http-request,request-headers,request-fields,http-response,response-body']
+====

@@ -1,0 +1,12 @@
+= API 명세서
+:toc: left
+:sectnums:
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toclevels: 2
+:docinfo: shared-head
+
+ImageTrial Team v0.0.1
+
+include::school.adoc[]
