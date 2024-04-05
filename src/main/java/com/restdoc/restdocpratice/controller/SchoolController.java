@@ -23,7 +23,7 @@ public class SchoolController {
     }
 
     @GetMapping("/{schoolId}")
-    public ResponseEntity<SchoolResponseDto> getSchool(@PathVariable Long schoolId){
+    public ResponseEntity<SchoolResponseDto> getSchool(@PathVariable Long schoolId, @RequestParam(value = "school", required = false)String s){
         return ResponseEntity.ok(schoolService.getSchool(schoolId));
     }
 

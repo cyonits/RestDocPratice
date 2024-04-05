@@ -1,6 +1,5 @@
 = API 명세서
 :toc: left
-:sectnums:
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
