@@ -49,8 +49,16 @@ test {
     outputs.dir snippetsDir
 }
 
-asciidoctor { // asciidoctor 테스크 성정
-    inputs.dir snippetsDir // 스니펫 위치 설정
-    configurations 'asciidoctorExt' // asciidoctor 확장 설정
-    dependsOn test // test 테스크 후 asciidoctor 실행 설정
+asciidoctor {
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}") {
+        into 'static/'
+    }
 }

@@ -1,0 +1,9 @@
+|===
+|헤더|필수값 여부|설명
+
+{{#headers}}
+|{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
+|{{#tableCellContent}}{{^optional}}필수{{/optional}}{{/tableCellContent}}
+|{{#tableCellContent}}{{description}}{{/tableCellContent}}
+{{/headers}}
+|===

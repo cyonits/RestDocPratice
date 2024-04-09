@@ -66,7 +66,7 @@ class SchoolControllerTest {
                         requestHeaders(
                                 headerWithName("X-AUTH-TOKEN").description("User JWT")),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("학교 이름"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("학교 이름").optional(),
                                 fieldWithPath("phoneNumber").type(JsonFieldType.STRING).description("학교 전화번호"),
                                 fieldWithPath("schoolType").type(JsonFieldType.STRING).description("학교 타입 : 초등학교/primary/, 중학교/middle/, 고등학교/high/, 대학/collage, 대학교/university, 대학원/grad"))));
     }
@@ -119,7 +119,7 @@ class SchoolControllerTest {
                         pathParameters(
                                 parameterWithName("schoolId").description("학교 ID")),
                         queryParameters(
-                                parameterWithName("school").description("example")),
+                                parameterWithName("school").description("example").optional()),
                         requestHeaders(
                                 headerWithName("X-AUTH-TOKEN").description("User JWT")),
                         responseFields(

@@ -28,6 +28,5 @@ operation::get_school_success[snippets='http-request,request-headers,path-parame
 [%collapsible]
 =====
 operation::notFound_school_404[snippets='http-response']
-operation::phoneNumber_conflict_409[snippets='http-response']
 =====
 ====
