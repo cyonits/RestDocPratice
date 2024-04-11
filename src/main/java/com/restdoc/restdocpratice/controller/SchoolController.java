@@ -3,10 +3,12 @@ package com.restdoc.restdocpratice.controller;
 import com.restdoc.restdocpratice.dto.school.CreateSchoolRequestDto;
 import com.restdoc.restdocpratice.dto.school.SchoolResponseDto;
 import com.restdoc.restdocpratice.dto.school.UpdateSchoolPhoneDto;
+import com.restdoc.restdocpratice.dto.school.UpdateSchoolProfileDto;
 import com.restdoc.restdocpratice.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,6 +37,12 @@ public class SchoolController {
     @PatchMapping("/phone")
     public ResponseEntity<Long> updateSchoolPhone(@RequestBody UpdateSchoolPhoneDto updateSchoolPhoneDto){
         return ResponseEntity.ok(schoolService.updateSchoolPhone(updateSchoolPhoneDto));
+    }
+
+    @PostMapping("/photo")
+    public ResponseEntity<Long> updateSchoolProfile(@RequestPart("request") UpdateSchoolProfileDto updateSchoolProfileDto,
+                                                    @RequestPart("image") MultipartFile multipartFile){
+        return ResponseEntity.ok(schoolService.updateSchoolProfile(updateSchoolProfileDto, multipartFile));
     }
 
     @DeleteMapping("/{schoolId}")

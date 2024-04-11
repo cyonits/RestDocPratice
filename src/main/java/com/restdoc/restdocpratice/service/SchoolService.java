@@ -1,5 +1,6 @@
 package com.restdoc.restdocpratice.service;
 
+import com.restdoc.restdocpratice.dto.school.UpdateSchoolProfileDto;
 import com.restdoc.restdocpratice.enums.SchoolType;
 import com.restdoc.restdocpratice.dto.school.CreateSchoolRequestDto;
 import com.restdoc.restdocpratice.dto.school.SchoolResponseDto;
@@ -11,6 +12,7 @@ import com.restdoc.restdocpratice.repository.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -73,6 +75,14 @@ public class SchoolService {
         return findSchool.getId();
     }
 
+    public Long updateSchoolProfile(UpdateSchoolProfileDto updateSchoolProfileDto, MultipartFile multipartFile) {
+        School findSchool = schoolRepository.findById(updateSchoolProfileDto.schoolId())
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.NOT_FOUND_SCHOOL));
+
+        return findSchool.getId();
+
+    }
+
     public String deleteSchool(Long deleteRequestSchoolId) {
         School findSchool = schoolRepository.findById(deleteRequestSchoolId)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.NOT_FOUND_SCHOOL));
@@ -81,4 +91,5 @@ public class SchoolService {
 
         return "ok";
     }
+
 }

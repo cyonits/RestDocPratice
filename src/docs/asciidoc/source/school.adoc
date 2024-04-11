@@ -1,0 +1,93 @@
+[[School-API]]
+== SchoolAPI
+
+=== 학교 생성
+`POST /school`
+====
+.성공
+[%collapsible]
+=====
+operation::create_school_success[snippets='http-request,request-headers,request-fields,http-response']
+=====
+.실패
+[%collapsible]
+=====
+operation::phoneNumber_conflict_409[snippets='http-response']
+=====
+====
+
+=== 학교 조회
+`GET /school/{schoolId}`
+====
+.성공
+[%collapsible]
+=====
+operation::get_school_success[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+=====
+.실패
+[%collapsible]
+=====
+operation::notFound_school_404[snippets='http-response']
+=====
+====
+
+=== 학교 List 조회
+`GET /school/list`
+====
+.성공
+[%collapsible]
+=====
+operation::get_school_list_success[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
+=====
+.실패
+[%collapsible]
+=====
+operation::wired_school_type_400[snippets='http-response']
+=====
+====
+
+=== 학교 전화번호 변경
+`PATCH /school/phone`
+====
+.성공
+[%collapsible]
+=====
+operation::patch_school_phone_success[snippets='http-request,request-headers,http-response']
+=====
+.실패
+[%collapsible]
+=====
+operation::notFound_school_404[snippets='http-response']
+operation::phoneNumber_conflict_409[snippets='http-response']
+=====
+====
+
+=== 학교 사진 업로드
+`Post /school/photo`
+====
+.성공
+[%collapsible]
+=====
+operation::post_school_profile_success[snippets='http-request,request-headers,request-parts,request-part-request-fields,http-response,']
+=====
+.실패
+[%collapsible]
+=====
+operation::notFound_school_404[snippets='http-response']
+=====
+====
+
+=== 학교 삭제
+`DELETE /school/{schoolId}`
+====
+.성공
+[%collapsible]
+=====
+operation::delete_school_success[snippets='http-request,request-headers,http-response,']
+=====
+.실패
+[%collapsible]
+=====
+operation::notFound_school_404[snippets='http-response']
+=====
+====

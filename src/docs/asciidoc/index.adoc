@@ -8,4 +8,4 @@
 
 ImageTrial Team v0.0.1
 
-include::school.adoc[]
+include::source/school.adoc[]
