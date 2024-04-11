@@ -9,3 +9,4 @@
 ImageTrial Team v0.0.1
 
 include::source/school.adoc[]
+include::source/student.adoc[]

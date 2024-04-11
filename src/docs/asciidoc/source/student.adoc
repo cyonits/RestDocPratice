@@ -1,0 +1,18 @@
+[[Student-API]]
+== StudentAPI
+
+=== 학생 생성
+`POST /student`
+====
+.성공
+[%collapsible]
+=====
+operation::create_student_success[snippets='http-request,request-headers,request-fields,http-response']
+=====
+.실패
+[%collapsible]
+=====
+operation::notFound_school_404[snippets='http-response']
+operation::already_student_409[snippets='http-response']
+=====
+====
