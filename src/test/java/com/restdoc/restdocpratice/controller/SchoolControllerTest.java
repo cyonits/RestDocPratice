@@ -1,15 +1,14 @@
 package com.restdoc.restdocpratice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.restdoc.restdocpratice.dto.school.CreateSchoolRequestDto;
-import com.restdoc.restdocpratice.dto.school.SchoolResponseDto;
-import com.restdoc.restdocpratice.dto.school.UpdateSchoolPhoneDto;
-import com.restdoc.restdocpratice.dto.school.UpdateSchoolProfileDto;
+import com.restdoc.restdocpratice.dto.school.*;
 import com.restdoc.restdocpratice.entity.School;
+import com.restdoc.restdocpratice.entity.Student;
 import com.restdoc.restdocpratice.exception.CustomRuntimeException;
 import com.restdoc.restdocpratice.exception.ErrorCode;
 import com.restdoc.restdocpratice.fixture.FileFixture;
 import com.restdoc.restdocpratice.fixture.SchoolFixture;
+import com.restdoc.restdocpratice.fixture.StudentFixture;
 import com.restdoc.restdocpratice.service.SchoolService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -58,8 +58,8 @@ class SchoolControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(post("/school")
-                .contentType(APPLICATION_JSON)
                 .header("X-AUTH-TOKEN", "Bearer + User JWT")
+                .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request)));
 
         // then
@@ -88,8 +88,8 @@ class SchoolControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(post("/school")
-                .contentType(APPLICATION_JSON)
                 .header("X-AUTH-TOKEN", "Bearer + User JWT")
+                .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request)));
 
         // then
@@ -182,8 +182,8 @@ class SchoolControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(patch("/school/phone")
-                .contentType(APPLICATION_JSON)
                 .header("X-AUTH-TOKEN", "Bearer + User JWT")
+                .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request)));
 
         // then
@@ -302,5 +302,45 @@ class SchoolControllerTest {
                 .andDo(document("wired_school_type_400",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())));
+    }
+
+    @Test
+    @DisplayName("get_school_list_success_student")
+    void successGetSchoolListWithStudent() throws Exception {
+        // given
+        School school1 = SchoolFixture.school1();
+        Student student1 = StudentFixture.student1();
+        Student student2 = StudentFixture.student2();
+        Student student3 = StudentFixture.student3();
+
+        given(schoolService.getSchoolListWithStudent(anyLong())).willReturn(SchoolWithStudentResponseDto.of(school1, List.of(student1, student2, student3)));
+
+        // when
+        ResultActions result = mockMvc.perform(get("/school/list/student/{schoolId}",1)
+                .header("X-AUTH-TOKEN", "Bearer + User JWT"));
+
+
+        // then
+        result.andExpect(status().isOk())
+
+                .andDo(print())
+
+                .andDo(document("get_school_list_success_student",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("schoolId").description("학교 ID")),
+                        requestHeaders(
+                                headerWithName("X-AUTH-TOKEN").description("User JWT")),
+                        responseFields(
+                                fieldWithPath("schoolId").type(JsonFieldType.NUMBER).description("학교 ID"),
+                                fieldWithPath("schoolName").type(JsonFieldType.STRING).description("학교 이름"),
+                                fieldWithPath("schoolPhoneNumber").type(JsonFieldType.STRING).description("학교 전화번호"),
+                                fieldWithPath("schoolType").type(JsonFieldType.STRING).description("학교 타입 : 초등학교/primary/, 중학교/middle/, 고등학교/high/, 대학/collage, 대학교/university, 대학원/grad"),
+                                fieldWithPath("students[].studentId").type(JsonFieldType.NUMBER).description("학생 ID"),
+                                fieldWithPath("students[].name").type(JsonFieldType.STRING).description("학생 이름"),
+                                fieldWithPath("students[].grade").type(JsonFieldType.NUMBER).description("학생 학년"),
+                                fieldWithPath("students[].classroom").type(JsonFieldType.NUMBER).description("학생 반"),
+                                fieldWithPath("students[].studentNumber").type(JsonFieldType.NUMBER).description("학생 번호"))));
     }
 }

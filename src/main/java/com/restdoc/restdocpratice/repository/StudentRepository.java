@@ -10,4 +10,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsBySchoolAndGradeAndClassroomAndStudentNumber(School school, Integer grade, Integer classroom, Integer studentNumber);
 
     List<Student> findAllBySchoolIn(List<School> schoolList);
+
+    List<Student> findAllBySchool(School school);
 }

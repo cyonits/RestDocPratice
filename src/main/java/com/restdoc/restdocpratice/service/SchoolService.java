@@ -1,14 +1,13 @@
 package com.restdoc.restdocpratice.service;
 
-import com.restdoc.restdocpratice.dto.school.UpdateSchoolProfileDto;
+import com.restdoc.restdocpratice.dto.school.*;
+import com.restdoc.restdocpratice.entity.Student;
 import com.restdoc.restdocpratice.enums.SchoolType;
-import com.restdoc.restdocpratice.dto.school.CreateSchoolRequestDto;
-import com.restdoc.restdocpratice.dto.school.SchoolResponseDto;
-import com.restdoc.restdocpratice.dto.school.UpdateSchoolPhoneDto;
 import com.restdoc.restdocpratice.entity.School;
 import com.restdoc.restdocpratice.exception.CustomRuntimeException;
 import com.restdoc.restdocpratice.exception.ErrorCode;
 import com.restdoc.restdocpratice.repository.SchoolRepository;
+import com.restdoc.restdocpratice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SchoolService {
     private final SchoolRepository schoolRepository;
+    private final StudentRepository studentRepository;
     public Long createSchool(CreateSchoolRequestDto createSchoolRequestDto) {
         if (schoolRepository.existsByPhoneNumber(createSchoolRequestDto.phoneNumber())) {
             throw new CustomRuntimeException(ErrorCode.ALREADY_PHONE_NUMBER);
@@ -32,9 +32,7 @@ public class SchoolService {
                 .schoolType(SchoolType.getSchoolType(createSchoolRequestDto.schoolType()))
                 .build();
 
-        schoolRepository.save(newSchool);
-
-        return newSchool.getId();
+        return schoolRepository.save(newSchool).getId();
     }
 
     public SchoolResponseDto getSchool(Long findRequestSchoolId) {
@@ -92,4 +90,12 @@ public class SchoolService {
         return "ok";
     }
 
+    public SchoolWithStudentResponseDto getSchoolListWithStudent(Long schoolId) {
+        School findSchool = schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new CustomRuntimeException(ErrorCode.NOT_FOUND_SCHOOL));
+
+        List<Student> students = studentRepository.findAllBySchool(findSchool);
+
+        return SchoolWithStudentResponseDto.of(findSchool, students);
+    }
 }

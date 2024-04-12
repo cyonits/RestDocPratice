@@ -1,9 +1,6 @@
 package com.restdoc.restdocpratice.controller;
 
-import com.restdoc.restdocpratice.dto.school.CreateSchoolRequestDto;
-import com.restdoc.restdocpratice.dto.school.SchoolResponseDto;
-import com.restdoc.restdocpratice.dto.school.UpdateSchoolPhoneDto;
-import com.restdoc.restdocpratice.dto.school.UpdateSchoolProfileDto;
+import com.restdoc.restdocpratice.dto.school.*;
 import com.restdoc.restdocpratice.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +13,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/school")
 public class SchoolController {
-
     private final SchoolService schoolService;
-
     @PostMapping
     public ResponseEntity<Long> createSchool(@RequestBody CreateSchoolRequestDto createSchoolRequestDto){
         return ResponseEntity.ok(schoolService.createSchool(createSchoolRequestDto));
     }
 
     @GetMapping("/{schoolId}")
-    public ResponseEntity<SchoolResponseDto> getSchool(@PathVariable Long schoolId, @RequestParam(value = "school", required = false)String s){
+    public ResponseEntity<SchoolResponseDto> getSchool(@PathVariable Long schoolId){
         return ResponseEntity.ok(schoolService.getSchool(schoolId));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<SchoolResponseDto>> getSchoolList(@RequestParam(value = "schType", required = false) List<String> schoolTypeList ){
+    public ResponseEntity<List<SchoolResponseDto>> getSchoolList(@RequestParam(value = "schType", required = false) List<String> schoolTypeList){
         return ResponseEntity.ok(schoolService.getSchoolList(schoolTypeList));
+    }
+
+    @GetMapping("/list/student/{schoolId}")
+    public ResponseEntity<SchoolWithStudentResponseDto> getSchoolListWithStudent(@PathVariable Long schoolId){
+        return ResponseEntity.ok(schoolService.getSchoolListWithStudent(schoolId));
     }
 
     @PatchMapping("/phone")

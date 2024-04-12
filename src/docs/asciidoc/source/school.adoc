@@ -46,6 +46,21 @@ operation::wired_school_type_400[snippets='http-response']
 =====
 ====
 
+=== 학교와 소속된 모든 학생 조회
+`GET /school/list/student/{schoolId}`
+====
+.성공
+[%collapsible]
+=====
+operation::get_school_list_success_student[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+=====
+.실패
+[%collapsible]
+=====
+operation::notFound_school_404[snippets='http-response']
+=====
+====
+
 === 학교 전화번호 변경
 `PATCH /school/phone`
 ====
