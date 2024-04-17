@@ -24,8 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -54,7 +53,7 @@ class SchoolControllerTest {
         // given
         CreateSchoolRequestDto request = new CreateSchoolRequestDto("잠실초등학교", "0212341234", "primary");
 
-        given(schoolService.createSchool(any())).willReturn(1L);
+        given(schoolService.createSchool(any(CreateSchoolRequestDto.class))).willReturn(1L);
 
         // when
         ResultActions result = mockMvc.perform(post("/school")
@@ -84,7 +83,7 @@ class SchoolControllerTest {
         // given
         CreateSchoolRequestDto request = new CreateSchoolRequestDto("잠실초등학교", "0212341234", "primary");
 
-        given(schoolService.createSchool(any())).willThrow(new CustomRuntimeException(ErrorCode.ALREADY_PHONE_NUMBER));
+        given(schoolService.createSchool(any(CreateSchoolRequestDto.class))).willThrow(new CustomRuntimeException(ErrorCode.ALREADY_PHONE_NUMBER));
 
         // when
         ResultActions result = mockMvc.perform(post("/school")
@@ -108,7 +107,7 @@ class SchoolControllerTest {
         // given
         School school = SchoolFixture.school1();
 
-        given(schoolService.getSchool(any())).willReturn(SchoolResponseDto.of(school));
+        given(schoolService.getSchool(anyLong())).willReturn(SchoolResponseDto.of(school));
 
         // when
         ResultActions result = mockMvc.perform(get("/school/{schoolId}", 1)
@@ -141,7 +140,7 @@ class SchoolControllerTest {
         School school2 = SchoolFixture.school2();
         School school3 =SchoolFixture.school3();
 
-        given(schoolService.getSchoolList(any())).willReturn(List.of(
+        given(schoolService.getSchoolList(anyList())).willReturn(List.of(
                 SchoolResponseDto.of(school1),
                 SchoolResponseDto.of(school2),
                 SchoolResponseDto.of(school3)));
@@ -178,7 +177,7 @@ class SchoolControllerTest {
         // given
         UpdateSchoolPhoneDto request = new UpdateSchoolPhoneDto(1L, "0212341234");
 
-        given(schoolService.updateSchoolPhone(any())).willReturn(1L);
+        given(schoolService.updateSchoolPhone(any(UpdateSchoolPhoneDto.class))).willReturn(1L);
 
         // when
         ResultActions result = mockMvc.perform(patch("/school/phone")
@@ -206,15 +205,11 @@ class SchoolControllerTest {
     public void schoolPhotoUploadSuccess() throws Exception {
         //given
         UpdateSchoolProfileDto request = new UpdateSchoolProfileDto(1L);
-        MockMultipartFile requestJson = new MockMultipartFile(
-                "request",
-                "jsonData",
-                MediaType.APPLICATION_JSON_VALUE,
-                objectMapper.writeValueAsString(request).getBytes());
+        MockMultipartFile requestJson = new MockMultipartFile("request", "jsonData", MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsString(request).getBytes());
 
         MockMultipartFile image = FileFixture.image();
 
-        given(schoolService.updateSchoolProfile(any(), any())).willReturn(1L);
+        given(schoolService.updateSchoolProfile(any(UpdateSchoolProfileDto.class), any(MockMultipartFile.class))).willReturn(1L);
 
         //when
         ResultActions result = mockMvc.perform(multipart("/school/photo")
@@ -244,7 +239,7 @@ class SchoolControllerTest {
     @DisplayName("delete_school_success")
     void deleteSchoolSuccess() throws Exception {
         // given
-        given(schoolService.deleteSchool(any())).willReturn("ok");
+        given(schoolService.deleteSchool(anyLong())).willReturn("ok");
 
         // when
         ResultActions result = mockMvc.perform(delete("/school/{schoolId}",1)
@@ -267,7 +262,7 @@ class SchoolControllerTest {
     void failGetSchool() throws Exception {
         // given
 
-        given(schoolService.getSchool(any())).willThrow(new CustomRuntimeException(ErrorCode.NOT_FOUND_SCHOOL));
+        given(schoolService.getSchool(anyLong())).willThrow(new CustomRuntimeException(ErrorCode.NOT_FOUND_SCHOOL));
 
         // when
         ResultActions result = mockMvc.perform(get("/school/{schoolId}",1)
@@ -288,7 +283,7 @@ class SchoolControllerTest {
     void wiredSchoolType() throws Exception {
         // given
 
-        given(schoolService.getSchoolList(any())).willThrow(new CustomRuntimeException(ErrorCode.WIRED_SCHOOL_TYPE));
+        given(schoolService.getSchoolList(anyList())).willThrow(new CustomRuntimeException(ErrorCode.WIRED_SCHOOL_TYPE));
 
         // when
         ResultActions result = mockMvc.perform(get("/school/list")

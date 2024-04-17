@@ -4,6 +4,7 @@ import com.restdoc.restdocpratice.dto.school.CreateSchoolRequestDto;
 import com.restdoc.restdocpratice.dto.school.SchoolResponseDto;
 import com.restdoc.restdocpratice.dto.school.UpdateSchoolPhoneDto;
 import com.restdoc.restdocpratice.entity.School;
+import com.restdoc.restdocpratice.enums.SchoolType;
 import com.restdoc.restdocpratice.exception.CustomRuntimeException;
 import com.restdoc.restdocpratice.fixture.SchoolFixture;
 import com.restdoc.restdocpratice.repository.SchoolRepository;
@@ -20,9 +21,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 class SchoolServiceTest {
@@ -41,7 +42,7 @@ class SchoolServiceTest {
             CreateSchoolRequestDto request = new CreateSchoolRequestDto("잠실초등학교", "0212341234", "primary");
 
             School mockSchool = SchoolFixture.school1();
-            given(schoolRepository.save(any())).willReturn(mockSchool);
+            given(schoolRepository.save(any(School.class))).willReturn(mockSchool);
 
             // when
             Long createdSchoolId = schoolService.createSchool(request);
@@ -56,7 +57,7 @@ class SchoolServiceTest {
             // given
             CreateSchoolRequestDto request = new CreateSchoolRequestDto("잠실초등학교", "0212341234", "primary");
 
-            given(schoolRepository.existsByPhoneNumber(any())).willReturn(true);
+            given(schoolRepository.existsByPhoneNumber(anyString())).willReturn(true);
 
             // when
 
@@ -127,7 +128,7 @@ class SchoolServiceTest {
             // given
             List<String> typeFilters = List.of("primary", "middle");
             List<School> mockSchools = List.of(SchoolFixture.school1(), SchoolFixture.school2());
-            given(schoolRepository.findAllBySchoolTypeIn(any())).willReturn(mockSchools);
+            given(schoolRepository.findAllBySchoolTypeIn(anyList())).willReturn(mockSchools);
 
             // when
             List<SchoolResponseDto> findSchools = schoolService.getSchoolList(typeFilters);
@@ -179,7 +180,7 @@ class SchoolServiceTest {
         void failPhoneNumberUpdate409() {
             // given
             UpdateSchoolPhoneDto request = new UpdateSchoolPhoneDto(1L, "0212341234");
-            given(schoolRepository.existsByPhoneNumber(any())).willReturn(true);
+            given(schoolRepository.existsByPhoneNumber(anyString())).willReturn(true);
 
             // when
 
