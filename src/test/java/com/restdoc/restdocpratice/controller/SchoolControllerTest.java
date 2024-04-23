@@ -59,7 +59,7 @@ class SchoolControllerTest {
         ResultActions result = mockMvc.perform(post("/school")
                 .header("X-AUTH-TOKEN", "Bearer + User JWT")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(request)));
+                .content(objectMapper.writeValueAsString(request)));
 
         // then
         result.andExpect(status().isOk())
@@ -89,7 +89,7 @@ class SchoolControllerTest {
         ResultActions result = mockMvc.perform(post("/school")
                 .header("X-AUTH-TOKEN", "Bearer + User JWT")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(request)));
+                .content(objectMapper.writeValueAsString(request)));
 
         // then
         result.andExpect(status().isConflict())
@@ -183,7 +183,7 @@ class SchoolControllerTest {
         ResultActions result = mockMvc.perform(patch("/school/phone")
                 .header("X-AUTH-TOKEN", "Bearer + User JWT")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(request)));
+                .content(objectMapper.writeValueAsString(request)));
 
         // then
         result.andExpect(status().isOk())
@@ -283,7 +283,7 @@ class SchoolControllerTest {
     void wiredSchoolType() throws Exception {
         // given
 
-        given(schoolService.getSchoolList(anyList())).willThrow(new CustomRuntimeException(ErrorCode.WIRED_SCHOOL_TYPE));
+        given(schoolService.getSchoolList(any())).willThrow(new CustomRuntimeException(ErrorCode.WIRED_SCHOOL_TYPE));
 
         // when
         ResultActions result = mockMvc.perform(get("/school/list")
