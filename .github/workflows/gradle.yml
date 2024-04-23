@@ -24,7 +24,7 @@ jobs:
 
     - name: access-s3
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PW }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws-key.AWS_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws-key.AWS_PW }}
       run:
-        aws s3 cp --region ap-northeast-2 build s3://action-test-minki
+        aws s3 cp --region ap-northeast-2 ./build/resources/main/static/docs/index.html s3://action-test-minki
