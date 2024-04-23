@@ -25,8 +25,8 @@ jobs:
     - name: access-s3
       uses: prewk/s3-cp-action@v2
       with:
-        aws_access_key_id: ${{ secrets.AWS_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_PW }}
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         source: 's3://action-test-minki'
         dest: './build/resources/main/static/docs/index.html'
 #      run:
