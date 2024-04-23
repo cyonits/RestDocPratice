@@ -24,10 +24,10 @@ jobs:
 
     - name: access-s3
       uses: prewk/s3-cp-action@v2
-      with:
+      env:
         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY }}
         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        source: 's3://action-test-minki'
-        dest: './build/resources/main/static/docs/index.html'
-#      run:
-#        aws s3 cp --region ap-northeast-2 ./build/resources/main/static/docs/index.html s3://action-test-minki
+#        source: 's3://action-test-minki'
+#        dest: './build/resources/main/static/docs/index.html'
+      run:
+        aws s3 cp --region ap-northeast-2 ./build/resources/main/static/docs/index.html s3://action-test-minki
